@@ -89,7 +89,7 @@ if st.sidebar.button("■ Carregar Dashboard"):
 
 # --- ÁREA PRINCIPAL DO DASHBOARD ---
 if 'dados_covid' in st.session_state:
-    df_completo = st.session_state['dados_covid']
+    df_completo = st.session_state['dados_covid'].copy()
     
     st.markdown("### 🔍 Filtros do Painel")
     c1, c2 = st.columns(2)
@@ -101,10 +101,13 @@ if 'dados_covid' in st.session_state:
         data_max = df_completo['DATE'].max().to_pydatetime()
         periodo_selecionado = st.slider("Selecione o Período:", min_value=data_min, max_value=data_max, value=(data_min, data_max), format="DD/MM/YYYY")
 
+    # Correção crucial: Separando os componentes da tupla do slider (Início, Fim)
+    data_inicio, data_fim = periodo_selecionado
+
     df_filtrado = df_completo[
         (df_completo['LOCATION'].isin(paises_selecionados)) & 
-        (df_completo['DATE'] >= periodo_selecionado) & 
-        (df_completo['DATE'] <= periodo_selecionado)
+        (df_completo['DATE'] >= data_inicio) & 
+        (df_completo['DATE'] <= data_fim)
     ]
 
     if not df_filtrado.empty:
