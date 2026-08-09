@@ -39,7 +39,8 @@ if st.sidebar.button("■ Carregar Dados no Snowflake"):
                 'new_cases', 'total_deaths', 'new_deaths', 
                 'population', 'people_vaccinated', 'people_fully_vaccinated'
             ]
-            df = pd.read_csv(URL_CSV, usecols=colunas)
+            # Substitua a linha do pd.read_csv por esta:
+            df = pd.read_csv(URL_CSV, usecols=colunas, storage_options={'User-Agent': 'Mozilla/5.0'})
             paises = ['Brazil', 'United States', 'India', 'Germany', 'South Africa', 'Japan']
             df = df[df['location'].isin(paises)]
             df = df[df['date'] >= '2021-01-01']
